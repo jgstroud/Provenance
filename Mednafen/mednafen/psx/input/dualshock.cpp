@@ -160,7 +160,7 @@ void InputDevice_DualShock::CheckManualAnaModeChange(void)
 
   if(amct_enabled)
   {
-   if(buttons[0] == 0x09 && buttons[1] == 0x0f)
+   if(buttons[0] == 0x09 && buttons[1] == 0x0c)
    {
     if(combo_anatoggle_counter == -1)
      combo_anatoggle_counter = 0;
@@ -216,7 +216,7 @@ void InputDevice_DualShock::Power(void)
  transmit_pos = 0;
  transmit_count = 0;
 
- analog_mode = false;
+ analog_mode = true;
  analog_mode_locked = false;
 
  mad_munchkins = false;
