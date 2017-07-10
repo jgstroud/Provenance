@@ -223,7 +223,7 @@ void InputDevice_DualShock::Power(void)
  transmit_pos = 0;
  transmit_count = 0;
 
- analog_mode = false;
+ analog_mode = true;
  analog_mode_locked = false;
 
  mad_munchkins = false;
