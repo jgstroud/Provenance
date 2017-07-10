@@ -152,6 +152,8 @@ static void mednafen_init(MednafenGameCore* current)
     MDFNI_SetSetting("pce.slend", "239"); // PCE: Last rendered scanline
 
     MDFNI_SetSetting("psx.h_overscan", "0"); // Remove PSX overscan
+    MDFNI_SetSettingB("psx.input.analog_mode_ct", true); // Enable Analog mode toggle
+    MDFNI_SetSettingUI("psx.input.analog_mode_ct.compare", 0x0c09);
 
     // PlayStation Multitap supported games (incomplete list)
     NSDictionary *multiTapGames =
