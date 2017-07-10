@@ -85,6 +85,16 @@ namespace MDFN_IEN_VB
 
 typedef enum MednaSystem {lynx, neogeo, pce, pcfx, psx, vb, wswan };
 
+// Map OE button order to Mednafen button order
+const int LynxMap[] = { 6, 7, 4, 5, 0, 1, 3, 2 };
+const int PCEMap[]  = { 4, 6, 7, 5, 0, 1, 8, 9, 10, 11, 3, 2, 12 };
+const int PCFXMap[] = { 8, 10, 11, 9, 0, 1, 2, 3, 4, 5, 7, 6 };
+const int PSXMap[]  = { 4, 6, 7, 5, 12, 13, 14, 15, 10, 8, 1, 11, 9, 2, 3, 0, 16, 24, 23, 22, 21, 20, 19, 18, 17 };
+const int VBMap[]   = { 9, 8, 7, 6, 4, 13, 12, 5, 3, 2, 0, 1, 10, 11 };
+const int WSMap[]   = { 0, 2, 3, 1, 4, 6, 7, 5, 9, 10, 8, 11 };
+const int NeoMap[]  = { 0, 1, 2, 3, 4, 5, 6};
+
+
 @interface MednafenGameCore ()
 {
     uint32_t *inputBuffer[8];
@@ -153,7 +163,12 @@ static void mednafen_init(MednafenGameCore* current)
 
     MDFNI_SetSetting("psx.h_overscan", "0"); // Remove PSX overscan
     MDFNI_SetSettingB("psx.input.analog_mode_ct", true); // Enable Analog mode toggle
-    MDFNI_SetSettingUI("psx.input.analog_mode_ct.compare", 0x0c09);
+
+    uint64 amct = ((1 << PSXMap[PVPSXButtonStart]) |
+                   (1 << PSXMap[PVPSXButtonSelect]) |
+                   (1 << PSXMap[PVPSXButtonL1]) |
+                   (1 << PSXMap[PVPSXButtonR1]));
+    MDFNI_SetSettingUI("psx.input.analog_mode_ct.compare", amct);
 
     // PlayStation Multitap supported games (incomplete list)
     NSDictionary *multiTapGames =
@@ -1319,15 +1334,6 @@ static size_t update_audio_batch(const int16_t *data, size_t frames)
 }
 
 # pragma mark - Input
-
-// Map OE button order to Mednafen button order
-const int LynxMap[] = { 6, 7, 4, 5, 0, 1, 3, 2 };
-const int PCEMap[]  = { 4, 6, 7, 5, 0, 1, 8, 9, 10, 11, 3, 2, 12 };
-const int PCFXMap[] = { 8, 10, 11, 9, 0, 1, 2, 3, 4, 5, 7, 6 };
-const int PSXMap[]  = { 4, 6, 7, 5, 12, 13, 14, 15, 10, 8, 1, 11, 9, 2, 3, 0, 16, 24, 23, 22, 21, 20, 19, 18, 17 };
-const int VBMap[]   = { 9, 8, 7, 6, 4, 13, 12, 5, 3, 2, 0, 1, 10, 11 };
-const int WSMap[]   = { 0, 2, 3, 1, 4, 6, 7, 5, 9, 10, 8, 11 };
-const int NeoMap[]  = { 0, 1, 2, 3, 4, 5, 6};
 
 #pragma mark Atari Lynx
 - (oneway void)didPushLynxButton:(OELynxButton)button forPlayer:(NSUInteger)player {
